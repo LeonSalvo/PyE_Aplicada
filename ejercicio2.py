@@ -25,13 +25,13 @@ def maria_antonieta(juanceto01): ##el puntaje de juanceto01
     if dice1 != 4 and dice2 != 4:
         dice1 = throw_dice()
         dice2 = throw_dice()
-    elif dice1 == 4 or dice2 == 4:
-        if dice1 == 4:
-            if dice2 < juanceto01:
-                dice2 = throw_dice()
-        elif dice2 == 4:
-            if dice1 < juanceto01:
-                dice1 = throw_dice()
+    
+    elif dice1 == 4:
+        if dice2 < juanceto01:
+            dice2 = throw_dice()
+    elif dice2 == 4:
+        if dice1 < juanceto01:
+            dice1 = throw_dice()
     return (dice1, dice2)
 
 ##---------------------------------------------------------------------------------
@@ -45,16 +45,17 @@ def points_calculator(player):
     return points
 
 def game():
+    random.seed()
     juan = points_calculator(juanceto01())
     maria = points_calculator(maria_antonieta(juan))
     if juan > maria:
         print(f"Juan gana con {juan} puntos")
         return 0
     elif maria > juan:
-        print("Maria gana con {maria} puntos")
+        print(f"Maria gana con {maria} puntos")
         return 1
     else:
-        print("Hubo un empate con {juan} puntos")
+        print(f"Hubo un empate con {juan} puntos")
         return 2
     
 def calculate_probability(iterations):
@@ -80,7 +81,12 @@ def main():
     print('2. Iterar 10000 veces')
     print('3. Iterar 100000 veces')
     
-    iterations = int(input('Seleccione una opción: '))
+    try:
+        iterations = int(input('Seleccione una opción: '))
+    except ValueError:
+        print('Menos mal que podias poner solo números\n')
+        return main()
+    
     if iterations == 1:
         calculate_probability(1000)
     elif iterations == 2:
@@ -88,7 +94,7 @@ def main():
     elif iterations == 3:
         calculate_probability(100000)
     else:
-        print('Opción no válida')
+        print('Opción no válida\n')
 
     
-    
+main()
