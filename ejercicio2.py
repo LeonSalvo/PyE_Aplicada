@@ -32,14 +32,24 @@ def maria_turn(juans_points): # El puntaje de Juan.
 
     # Re-lanzar si no hay un 4
     if dice1 != 4 and dice2 != 4:
-        dice1 = throw_dice()
-        dice2 = throw_dice()
+        if dice1 >= 5 and juans_points >= 5:
+            dice2 = throw_dice()
+        elif dice2 >= 5 and juans_points >= 5:
+            dice1 = throw_dice()
+        else:
+            dice1 = throw_dice()
+            dice2 = throw_dice()
     elif dice1 == 4:
         # Re-lanzar si hay un 4 y el otro dado es menor al puntaje de Juan
+        # O si el puntaje de juan es igual al dado de maria y es menor a 4.
         if dice2 < juans_points:
+            dice2 = throw_dice()
+        elif juans_points == dice2 and juans_points <= 4:
             dice2 = throw_dice()
     elif dice2 == 4:
         if dice1 < juans_points:
+            dice1 = throw_dice()
+        elif juans_points == dice1 and juans_points <= 4:
             dice1 = throw_dice()
     return (dice1, dice2)
 
@@ -93,7 +103,7 @@ def calculate_probability(iterations):
 
 # Función principal.
 def main():
-    print(' -- Ejercicio 2 -- \n')
+    print(' -- Ejercicio 2: juego de los dados -- \n')
     print('Juego de los dados. \n')
     print('  1. Iterar 1000 veces')
     print('  2. Iterar 10000 veces')
@@ -113,6 +123,7 @@ def main():
         calculate_probability(100000)
     else:
         print('Opción no válida.\n')
+        main()
 
     
 main()
