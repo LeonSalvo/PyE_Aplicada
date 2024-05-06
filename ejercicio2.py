@@ -32,9 +32,9 @@ def maria_turn(juans_points): # El puntaje de Juan.
 
     # Re-lanzar si no hay un 4
     if dice1 != 4 and dice2 != 4:
-        if dice1 >= 5 and juans_points >= 5:
+        if dice1 >= 5 and juans_points >= 4:
             dice2 = throw_dice()
-        elif dice2 >= 5 and juans_points >= 5:
+        elif dice2 >= 5 and juans_points >= 4:
             dice1 = throw_dice()
         else:
             dice1 = throw_dice()
@@ -45,6 +45,7 @@ def maria_turn(juans_points): # El puntaje de Juan.
         if dice2 < juans_points:
             dice2 = throw_dice()
         elif juans_points == dice2 and juans_points <= 4:
+
             dice2 = throw_dice()
     elif dice2 == 4:
         if dice1 < juans_points:
