@@ -63,13 +63,13 @@ def game():
     
     # Determinar el ganador.
     if juan > maria:
-        print(f"Juan gana con {juan} puntos")
+        print(f"- Juan gana con {juan} puntos")
         return 0
     elif maria > juan:
-        print(f"Maria gana con {maria} puntos")
+        print(f"- Maria gana con {maria} puntos")
         return 1
     else:
-        print(f"Hubo un empate con {juan} puntos")
+        print(f"- Hubo un empate con {juan} puntos")
         return 2
 
 # Función que calcula la probabilidad de que Juan o Maria ganen.
@@ -85,21 +85,22 @@ def calculate_probability(iterations):
             maria_wins += 1
         else:
             ties += 1
-            
+    
+    print(f"\n Resultados de {iterations} iteraciones: \n")
     print(f"Probabilidad de que Juan gane: {juan_wins/iterations}")
-    print(f"Probabilidad de que Maria gane: {maria_wins/iterations}")
+    print(f"Probabilidad de que María gane: {maria_wins/iterations}")
     print(f"Probabilidad de empate: {ties/iterations}")
 
 # Función principal.
 def main():
-    print('Ejercicio 2')
-    print('Juego de los dados')
-    print('1. Iterar 1000 veces')
-    print('2. Iterar 10000 veces')
-    print('3. Iterar 100000 veces')
+    print(' -- Ejercicio 2 -- \n')
+    print('Juego de los dados. \n')
+    print('  1. Iterar 1000 veces')
+    print('  2. Iterar 10000 veces')
+    print('  3. Iterar 100000 veces \n')
     
     try:
-        iterations = int(input('Seleccione una opción: '))
+        iterations = int(input('Seleccione una opción para comenzar:\n'))
     except ValueError:
         print('Entrada inválida. Solo se permiten números.\n')
         return main()
