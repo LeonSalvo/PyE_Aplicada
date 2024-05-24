@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.stats import binom
+from scipy.stats import binom, mode
 import matplotlib.pyplot as plt
 
 # Distribucion 1 - binomial
@@ -11,9 +11,14 @@ def binomial_distribution():
     samples = [binom.rvs(n, p, size=size) for size in sizes]
     return samples, sizes
 
+def calc_mode_mean(samples, sizes):
+    for i, sample in enumerate(samples):
+        median = np.median(sample)
+        mode_val = mode(sample)[0]
+        print(f"Muestra de tamaño {sizes[i]}: Mediana = {median}, Moda = {mode_val}")
 
 def create_boxplots(samples, sizes):
-    plt.figure(figsize=(12, 8))  # Tamaño de la figura
+    plt.figure(figsize=(8, 4))  # Tamaño de la figura
     # Crear un diagrama de cajas para cada muestra
     for i, sample in enumerate(samples):
         plt.subplot(2, 2, i + 1)  # Crea los diagramas en una cuadricula de 2x2
@@ -40,6 +45,7 @@ def main():
     samples, sizes = binomial_distribution()
     create_boxplots(samples, sizes)
     create_histograms(samples, sizes)
+    calc_mode_mean(samples, sizes)
 
 main()
 
