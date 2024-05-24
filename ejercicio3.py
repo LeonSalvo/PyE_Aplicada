@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.stats import binom
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Distribucion 1 - binomial
 
