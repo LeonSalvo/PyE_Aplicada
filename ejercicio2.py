@@ -22,9 +22,6 @@ def juan_turn():
             dice2 = throw_dice()
     return (dice1, dice2)
 
-# A CAMBIAR
-# Hay que hacer la mejor jugada posible teniendo en cuenta el puntaje de Juan.
-
 # Funcion que simula el turno de Maria, dependiendo de los puntos de Juan.
 def maria_turn(juans_points): # El puntaje de Juan.
     dice1 = throw_dice()
@@ -125,6 +122,5 @@ def main():
     else:
         print('Opción no válida.\n')
         main()
-
     
 main()
