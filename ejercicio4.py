@@ -1,40 +1,52 @@
 import pandas as pd
 from scipy import stats
+def load_csv(file_path):
+    df = pd.read_csv(file_path)
+    return df
 
-# Cargar el archivo CSV
-file_path = 'titanik.csv'
-df = pd.read_csv(file_path)
+def mean_calculator(df, group_by, column):
+    return df.groupby(group_by)[column].mean()
 
-# Mostrar las primeras filas del dataframe
-df.head(), df.info()
+def fill_na_column(df, group_by, column):
+    mean_age_by_gender = mean_calculator(df, group_by, column)
+    print("Promedio de edades según el género: ")
+    print(mean_age_by_gender)
+    df[column] = df.apply(lambda row: mean_age_by_gender[row[group_by]] if pd.isnull(row[column]) else row[column], axis=1)
+    return df
+def main():
+    # Cargar el archivo CSV
+    file_path = 'titanik.csv'
+    df = load_csv(file_path)
+    # Columna a llenar debido a valores faltantes
+    column = 'age'
+    # Columna por la cual se agrupará para calcular la media
+    group_by = 'gender'
 
-# Calcular la media de las edades según el género
-mean_age_by_gender = df.groupby('gender')['age'].mean()
+    fill_na_column(df, group_by, column)
 
-print(mean_age_by_gender)
+    # Calcular la media
+    mean_age = df['age'].mean()
+    print("La media de las edades es: ", mean_age)
 
-# Llenar los valores faltantes en la columna 'age' con la media de la edad según el género
-df['age'] = df.apply(lambda row: mean_age_by_gender[row['gender']] if pd.isnull(row['age']) else row['age'], axis=1)
+    # Calcular la mediana
+    median_age = df['age'].median()
+    print("La mediana de las edades es: ", median_age)
 
-# Verificar si hay valores nulos restantes en la columna 'age'
-df['age'].isnull().sum()
+    # Calcular la moda
+    mode_age = df['age'].mode()[0]
+    print("La moda de las edades es: ", mode_age)
 
-# Calcular la media
-mean_age = df['age'].mean()
+    # Calcular el rango
+    range_age = df['age'].max() - df['age'].min()
+    print("El rango de las edades es: ", range_age)
 
-# Calcular la mediana
-median_age = df['age'].median()
+    # Calcular la varianza
+    variance_age = df['age'].var()
+    print("La varianza de las edades es: ", variance_age)
 
-# Calcular la moda
-mode_age = df['age'].mode()[0]
+    # Calcular la desviación estándar
+    std_dev_age = df['age'].std()
+    print("La desviación estándar de las edades es: ", std_dev_age)
 
-# Calcular el rango
-range_age = df['age'].max() - df['age'].min()
 
-# Calcular la varianza
-variance_age = df['age'].var()
-
-# Calcular la desviación estándar
-std_dev_age = df['age'].std()
-
-mean_age, median_age, mode_age, range_age, variance_age, std_dev_age
+main()
