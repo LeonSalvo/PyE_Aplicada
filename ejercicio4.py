@@ -24,29 +24,34 @@ def main():
 
     fill_na_column(df, group_by, column)
 
-    # Calcular la media
+    # Calculo de la media
     mean_age = df['age'].mean()
     print("La media de las edades es: ", mean_age)
 
-    # Calcular la mediana
+    # Calculo de la mediana
     median_age = df['age'].median()
     print("La mediana de las edades es: ", median_age)
 
-    # Calcular la moda
+    # Calculo de la moda
     mode_age = df['age'].mode()[0]
     print("La moda de las edades es: ", mode_age)
 
-    # Calcular el rango
+    # Calculo del rango
     range_age = df['age'].max() - df['age'].min()
     print("El rango de las edades es: ", range_age)
 
-    # Calcular la varianza
+    # Calculo de la varianza
     variance_age = df['age'].var()
     print("La varianza de las edades es: ", variance_age)
 
-    # Calcular la desviación estándar
+    # Calculo de la desviación estándar
     std_dev_age = df['age'].std()
     print("La desviación estándar de las edades es: ", std_dev_age)
 
+    # Calculo de la tasa de supervivencia general
+    survival_rate = df['survived'].mean()
+    print("La tasa de supervivencia general es: ", survival_rate)
+
+    # Calculo de la tasa de supervivencia por género
 
 main()
