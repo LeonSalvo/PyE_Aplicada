@@ -3,21 +3,26 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def load_csv(file_path):
     df = pd.read_csv(file_path)
     return df
 
+
 def mean_calculator(df, group_by, column):
     return df.groupby(group_by)[column].mean()
 
+
 def fill_na_column(df, group_by, column):
     mean_age_by_gender = mean_calculator(df, group_by, column)
-    print("Promedio de edades según el género: ")
-    print(mean_age_by_gender)
-    df[column] = df.apply(lambda row: mean_age_by_gender[row[group_by]] if pd.isnull(row[column]) else row[column], axis=1)
+    print(f"Promedio de edades según el género: {mean_age_by_gender}")
+    df[column] = df.apply(lambda row: mean_age_by_gender[row[group_by]] if pd.isnull(row[column]) else row[column],
+                          axis=1)
     return df
+
+
 def main():
-    #Cargar el archivo CSV
+    # Cargar el archivo CSV
     file_path = 'titanik.csv'
     df = load_csv(file_path)
     # Columna a llenar debido a valores faltantes
@@ -29,35 +34,35 @@ def main():
 
     # Calculo de la media
     mean_age = df['age'].mean()
-    print("La media de las edades es: ", mean_age, "\n")
+    print(f"La media de las edades es: {mean_age}\n")
 
     # Calculo de la mediana
     median_age = df['age'].median()
-    print("La mediana de las edades es: ", median_age, "\n")
+    print(f"La mediana de las edades es: {median_age}\n")
 
     # Calculo de la moda
     mode_age = df['age'].mode()[0]
-    print("La moda de las edades es: ", mode_age, "\n")
+    print(f"La moda de las edades es: {mode_age}\n")
 
     # Calculo del rango
     range_age = df['age'].max() - df['age'].min()
-    print("El rango de las edades es: ", range_age, "\n")
+    print(f"El rango de las edades es: {range_age}\n")
 
     # Calculo de la varianza
     variance_age = df['age'].var()
-    print("La varianza de las edades es: ", variance_age, "\n")
+    print(f"La varianza de las edades es: {variance_age}\n")
 
     # Calculo de la desviación estándar
     std_dev_age = df['age'].std()
-    print("La desviación estándar de las edades es: ", std_dev_age, "\n")
+    print(f"La desviación estándar de las edades es: {std_dev_age}\n")
 
     # Calculo de la tasa de supervivencia general
     survival_rate = df['survived'].mean()
-    print("La tasa de supervivencia general es: ", survival_rate, "\n")
+    print(f"La tasa de supervivencia general es: {survival_rate}\n")
 
     # Calculo de la tasa de supervivencia por género
     survival_rate_by_gender = df.groupby('gender')['survived'].mean()
-    print("Taza de supervivencia por género: ", survival_rate_by_gender, "\n")
+    print(f"Taza de supervivencia por género: {survival_rate_by_gender}\n")
 
     # Histograma de las edades por clase
     df.hist(column='age', by='p_class', bins=20, edgecolor='black', figsize=(15, 10))
@@ -81,6 +86,7 @@ def main():
     sample_standard_error = stats.sem(df['age'])
 
     confidence_interval = stats.t.interval(confidence_level, degrees_freedom, sample_mean, sample_standard_error)
-    print("Intervalo de confianza para la edad promedio: ",confidence_interval, "\n")
+    print(f"Intervalo de confianza para la edad promedio: {confidence_interval}\n")
+
 
 main()
