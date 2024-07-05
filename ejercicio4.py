@@ -88,5 +88,36 @@ def main():
     confidence_interval = stats.t.interval(confidence_level, degrees_freedom, sample_mean, sample_standard_error)
     print(f"Intervalo de confianza para la edad promedio: {confidence_interval}\n")
 
+    # Promedio de edad por género
+    women_age = df[df['gender'] == 'female']['age']
+    t_stat, p_value = stats.ttest_1samp(women_age, 56, alternative='greater')
+    print(f"Prueba t para la edad promedio de las mujeres: t={t_stat}, p={p_value}\n")
+
+    men_age = df[df['gender'] == 'male']['age']
+    t_stat, p_value = stats.ttest_1samp(men_age, 56, alternative='greater')
+    print(f"Prueba t para la edad promedio de los hombres: t={t_stat}, p={p_value}\n")
+
+    # Prueba t para la tasa de supervivencia entre hombres y mujeres
+    men_survival = df[df['gender'] == 'male']['survived']
+    women_survival = df[df['gender'] == 'female']['survived']
+    t_stat, p_value = stats.ttest_ind(men_survival, women_survival, alternative='two-sided')
+    print(f"Diferencia en la tasa de supervivencia entre hombres y mujeres: t={t_stat}, p={p_value}\n")
+
+    # Prueba t para la tasa de supervivencia entre las clases
+    class_1_survival = df[df['p_class'] == 1]['survived']
+    class_2_survival = df[df['p_class'] == 2]['survived']
+    class_3_survival = df[df['p_class'] == 3]['survived']
+
+    t_stat_12, p_value_12 = stats.ttest_ind(class_1_survival, class_2_survival, alternative='two-sided')
+    t_stat_13, p_value_13 = stats.ttest_ind(class_1_survival, class_3_survival, alternative='two-sided')
+    t_stat_23, p_value_23 = stats.ttest_ind(class_2_survival, class_3_survival, alternative='two-sided')
+
+    print(f"Diferencia en la tasa de supervivencia entre clase 1 y clase 2: t={t_stat_12}, p={p_value_12}\n")
+    print(f"Diferencia en la tasa de supervivencia entre clase 1 y clase 3: t={t_stat_13}, p={p_value_13}\n")
+    print(f"Diferencia en la tasa de supervivencia entre clase 2 y clase 3: t={t_stat_23}, p={p_value_23}\n")
+
+    ttest_ages, p_value_ages = stats.ttest_ind(women_age, men_age, alternative='two-sided')
+    print(f"Diferencia en la edad promedio entre hombres y mujeres: t={ttest_ages}, p={p_value_ages}\n")
+
 
 main()
