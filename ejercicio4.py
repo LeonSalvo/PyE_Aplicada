@@ -3,15 +3,12 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 def load_csv(file_path):
     df = pd.read_csv(file_path)
     return df
 
-
 def mean_calculator(df, group_by, column):
     return df.groupby(group_by)[column].mean()
-
 
 def fill_na_column(df, group_by, column):
     mean_age_by_gender = mean_calculator(df, group_by, column)
@@ -20,6 +17,29 @@ def fill_na_column(df, group_by, column):
                           axis=1)
     return df
 
+def histogram(df):
+    # Histograma de las edades por clase
+    axes = df.hist(column='age', by='p_class', bins=20, edgecolor='black', figsize=(15, 10))
+
+    # Ajustar el título de cada subgráfico y las etiquetas de los ejes
+    for ax in axes.flatten():
+        ax.set_title(f'Clase {ax.get_title()}')  # Título individual para cada clase
+        ax.set_xlabel('Edad')
+        ax.set_ylabel('Frecuencia')
+
+    # Título principal para el conjunto de los histogramas
+    plt.suptitle('Histograma de las Edades por Clase', y=1.02)
+
+    plt.tight_layout()
+    plt.show()
+
+def boxplots(df):
+    df.boxplot(column='age', by='survived', grid=False, vert=False, figsize=(10, 5))
+    plt.title('Diagrama de Cajas para las Edades de los Supervivientes y No Supervivientes')
+    plt.suptitle('')
+    plt.xlabel('Edad')
+    plt.ylabel('Supervivencia (0=No, 1=Sí)')
+    plt.show()
 
 def main():
     # Cargar el archivo CSV
@@ -65,20 +85,11 @@ def main():
     print(f"Taza de supervivencia por género: {survival_rate_by_gender}\n")
 
     # Histograma de las edades por clase
-    df.hist(column='age', by='p_class', bins=20, edgecolor='black', figsize=(15, 10))
-    plt.suptitle('Histograma de las Edades por Clase', y=1.02)
-    plt.xlabel('Edad')
-    plt.ylabel('Frecuencia')
-    plt.show()
+    histogram(df)
 
     # Diagrama de cajas para las edades de los supervivientes y no supervivientes
-    df.boxplot(column='age', by='survived', grid=False, vert=False, figsize=(10, 5))
-    plt.title('Diagrama de Cajas para las Edades de los Supervivientes y No Supervivientes')
-    plt.suptitle('')
-    plt.xlabel('Edad')
-    plt.ylabel('Supervivencia (0=No, 1=Sí)')
-    plt.show()
-
+    boxplots(df)
+    
     # Intervalo de confianza para la edad promedio
     confidence_level = 0.95
     degrees_freedom = len(df['age']) - 1
