@@ -3,19 +3,23 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def load_csv(file_path):
     df = pd.read_csv(file_path)
     return df
 
+
 def mean_calculator(df, group_by, column):
     return df.groupby(group_by)[column].mean()
 
+
 def fill_na_column(df, group_by, column):
     mean_age_by_gender = mean_calculator(df, group_by, column)
-    print(f"Promedio de edades según el género: {mean_age_by_gender}")
+    print(f"Promedio de edades según el género:\n{mean_age_by_gender}")
     df[column] = df.apply(lambda row: mean_age_by_gender[row[group_by]] if pd.isnull(row[column]) else row[column],
                           axis=1)
     return df
+
 
 def histogram(df):
     # Histograma de las edades por clase
@@ -33,6 +37,7 @@ def histogram(df):
     plt.tight_layout()
     plt.show()
 
+
 def boxplots(df):
     df.boxplot(column='age', by='survived', grid=False, vert=False, figsize=(10, 5))
     plt.title('Diagrama de Cajas para las Edades de los Supervivientes y No Supervivientes')
@@ -40,6 +45,12 @@ def boxplots(df):
     plt.xlabel('Edad')
     plt.ylabel('Supervivencia (0=No, 1=Sí)')
     plt.show()
+
+
+def calculate_ttest_ind(class_1_survival, class_2_survival):
+    t_stat, p_value = stats.ttest_ind(class_1_survival, class_2_survival, alternative='two-sided')
+    return t_stat, p_value
+
 
 def main():
     # Cargar el archivo CSV
@@ -82,14 +93,14 @@ def main():
 
     # Calculo de la tasa de supervivencia por género
     survival_rate_by_gender = df.groupby('gender')['survived'].mean()
-    print(f"Taza de supervivencia por género: {survival_rate_by_gender}\n")
+    print(f"Tasa de supervivencia por género:\n{survival_rate_by_gender}\n")
 
     # Histograma de las edades por clase
     histogram(df)
 
     # Diagrama de cajas para las edades de los supervivientes y no supervivientes
     boxplots(df)
-    
+
     # Intervalo de confianza para la edad promedio
     confidence_level = 0.95
     degrees_freedom = len(df['age']) - 1
@@ -119,9 +130,9 @@ def main():
     class_2_survival = df[df['p_class'] == 2]['survived']
     class_3_survival = df[df['p_class'] == 3]['survived']
 
-    t_stat_12, p_value_12 = stats.ttest_ind(class_1_survival, class_2_survival, alternative='two-sided')
-    t_stat_13, p_value_13 = stats.ttest_ind(class_1_survival, class_3_survival, alternative='two-sided')
-    t_stat_23, p_value_23 = stats.ttest_ind(class_2_survival, class_3_survival, alternative='two-sided')
+    t_stat_12, p_value_12 = calculate_ttest_ind(class_1_survival, class_2_survival)
+    t_stat_13, p_value_13 = calculate_ttest_ind(class_1_survival, class_3_survival)
+    t_stat_23, p_value_23 = calculate_ttest_ind(class_2_survival, class_3_survival)
 
     print(f"Diferencia en la tasa de supervivencia entre clase 1 y clase 2: t={t_stat_12}, p={p_value_12}\n")
     print(f"Diferencia en la tasa de supervivencia entre clase 1 y clase 3: t={t_stat_13}, p={p_value_13}\n")
